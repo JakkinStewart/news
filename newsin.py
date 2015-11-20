@@ -6,11 +6,12 @@ import os
 #while var == 1:
 def main():
     # Runs news module
-    news('news/cnn.txt')
+    newsList('news/cnn.txt')
+    newsDict()
     # Opens outFile for writing
     outFile = open("news/news.txt", "w")
     
-def news(news):
+def newsList(news):
     # Runs news.sh
     os.system("/usr/bin/sh /home/$USER/newsTest/news.sh")
     # Opens whichever news text file exists. In this case, its cnn.txt
@@ -18,21 +19,28 @@ def news(news):
 
     # Creates empty sets, lists, and dictionarys for later use.
     s = []
-    predict = set()
     diction = {}
 
     # Creates list of each line. Makes browsing the news easier.
     for word in infile:
         word = word.rstrip()
         word = word.split()
-        s += word
-        print(word)
-#    for word in s:
-#        predict.add(word)
-#    
+        s.append(word)
+    return s
+    print(s[4])
+
+def newsSet():
+    s = newsList('news/cnn.txt')
+    predict = set()    
+    for word in s:
+        predict.add(word)
+    return predict
+
+def newsDict():
+    predict = newsSet()
 #    average = 0
-#    for word in predict:
-#        diction[word] = s.count(word)
+    for word in predict:
+        diction[word] = s.count(word)
 #
 #    maximum = 0 
 #    for word in diction:
