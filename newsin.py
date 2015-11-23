@@ -7,7 +7,9 @@ import os
 def main():
 #    news = input("Enter the text file location: ")
 #    keywords = input("Enter the keyword file location: ")
-    news = 'news/cnn.txt'
+    news = 'news/newsIn.txt'
+#    cnn = 'news/cnn.txt'
+    
     keywords = 'keywords.txt'
     theNews(newsList(news), keywords)
 #    print(newsList(news))
@@ -40,26 +42,18 @@ def newsSet(newsIn):
 # 
 def theNews(newsList, keywords):
 
-#    keyword = ['to', 'bride']
-    #if keyword in newsList:
-#    for word in newsList:
-#        for words in keyword:
-#            if words in word:
-#                print(word)
-
     keyword = open(keywords, 'r')
 
     line = keyword.read()
     line = line.strip()
     line = line.split('\n')
+#    if '[' in line:
+#        # Make type of feed
 
     for word in newsList:
         for words in line:
             if words in word:
                 print(word)
-#    for keyWords in line:
-#        print(keyWords)
-
 main()
 
 
