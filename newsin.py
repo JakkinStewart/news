@@ -9,7 +9,7 @@ def main():
 #    keywords = input("Enter the keyword file location: ")
     news = 'news/cnn.txt'
     keywords = 'keywords.txt'
-    theNews(newsList(news))#, keywords)
+    theNews(newsList(news), keywords)
 #    print(newsList(news))
 
 def newsList(newsIn):
@@ -26,9 +26,6 @@ def newsList(newsIn):
         word = word.rstrip()
         word = word.split()
         s.append(word)
-    # Prints off the list
-#    for word in s:
-#        print(word)
     return s
 
 def newsSet(newsIn):
@@ -41,24 +38,27 @@ def newsSet(newsIn):
     return predict
 
 # 
-def theNews(newsList): #, keywords):
+def theNews(newsList, keywords):
 
-    keyword = ['to', 'bride']
+#    keyword = ['to', 'bride']
     #if keyword in newsList:
+#    for word in newsList:
+#        for words in keyword:
+#            if words in word:
+#                print(word)
+
+    keyword = open(keywords, 'r')
+
+    line = keyword.read()
+    line = line.strip()
+    line = line.split('\n')
+
     for word in newsList:
-        for words in keyword:
+        for words in line:
             if words in word:
                 print(word)
-
-#    keywords = open(keywords, 'r')
-
-#    line = keywords.read()
-#    line = line.strip()
-#    line = line.split('\n')
-#
 #    for keyWords in line:
-#        if keyWords in newsList:
-#            print(keyWords)
+#        print(keyWords)
 
 main()
 
