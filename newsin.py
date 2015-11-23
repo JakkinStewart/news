@@ -1,46 +1,95 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 # Written by Joshua Jordi
 
 import os
 #var = 1
 #while var == 1:
 def main():
-    # Runs news module
-    newsList('news/cnn.txt')
-    newsDict()
-    # Opens outFile for writing
-    outFile = open("news/news.txt", "w")
-    
-def newsList(news):
+#    news = input("Enter the text file location: ")
+#    keywords = input("Enter the keyword file location: ")
+    news = 'news/cnn.txt'
+    keywords = 'keywords.txt'
+    theNews(newsList(news))#, keywords)
+#    print(newsList(news))
+
+def newsList(newsIn):
     # Runs news.sh
     os.system("/usr/bin/sh /home/$USER/newsTest/news.sh")
     # Opens whichever news text file exists. In this case, its cnn.txt
-    infile = open(news, "r")
+    infile = open(newsIn, "r")
 
-    # Creates empty sets, lists, and dictionarys for later use.
+    # Creates an empty list for later use.
     s = []
-    diction = {}
 
     # Creates list of each line. Makes browsing the news easier.
     for word in infile:
         word = word.rstrip()
         word = word.split()
         s.append(word)
+    # Prints off the list
+#    for word in s:
+#        print(word)
     return s
-    print(s[4])
 
-def newsSet():
-    s = newsList('news/cnn.txt')
+def newsSet(newsIn):
+    # Creates a set of each word.
+    s = newsList(newsIn)
     predict = set()    
-    for word in s:
-        predict.add(word)
+    for sentences in s:
+        for word in sentences:
+            predict.add(word)
     return predict
 
-def newsDict():
-    predict = newsSet()
+# 
+def theNews(newsList): #, keywords):
+
+    keyword = ['to', 'bride']
+    #if keyword in newsList:
+    for word in newsList:
+        for words in keyword:
+            if words in word:
+                print(word)
+
+#    keywords = open(keywords, 'r')
+
+#    line = keywords.read()
+#    line = line.strip()
+#    line = line.split('\n')
+#
+#    for keyWords in line:
+#        if keyWords in newsList:
+#            print(keyWords)
+
+main()
+
+
+
+# Below this line are relics from earlier versions of the program. They are not designed to work, just give me code examples if I wish to incorporate them later on.
+
+#def newsDict(newsList, newsSet):
+#    list1 = newsList
+#    preDict = newsSet
+#
+#    diction = {}
+#    for word in preDict:
+#        diction[word] = list1.count(word)
+#        print(word, list1.count(word))
+
+#def newsDict():
+#    s = newsList("news/cnn.txt")
+#    s = list(s)
+#    predict = newsSet()
+#    diction = {}
+#    for word in predict:
+#        pass
+#        diction[word] = word
+    
 #    average = 0
-    for word in predict:
-        diction[word] = s.count(word)
+#    print(s)
+#    for word in predict:
+#        print(s.count(word))
+#        diction[word] = s.count(word)
+#    print(diction)
 #
 #    maximum = 0 
 #    for word in diction:
@@ -58,4 +107,4 @@ def newsDict():
 ##    print(diction)
 ##        count += 1
 ##        average += s.count(word)
-main()
+
