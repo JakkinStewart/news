@@ -2,17 +2,19 @@
 # Written by Joshua Jordi
 
 import os
-#var = 1
-#while var == 1:
 def main():
 #    news = input("Enter the text file location: ")
 #    keywords = input("Enter the keyword file location: ")
-    news = 'news/newsIn.txt'
+    news = 'news/cnn.txt'
 #    cnn = 'news/cnn.txt'
     
-    keywords = 'keywords.txt'
-    theNews(newsList(news), keywords)
-#    print(newsList(news))
+    keywords = open('keywords.txt', 'r')
+    keyword = keywords.read()
+    keyword = keyword.strip()
+    keyword = keyword.split('\n')
+
+#    print(theNews(newsList(news), keyword))
+    categories(keyword)
 
 def newsList(newsIn):
     # Runs news.sh
@@ -42,21 +44,21 @@ def newsSet(newsIn):
 # 
 def theNews(newsList, keywords):
 
-    keyword = open(keywords, 'r')
+    keyword = keywords #open(keywords, 'r')
 
-    line = keyword.read()
-    line = line.strip()
-    line = line.split('\n')
-#    if '[' in line:
-#        # Make type of feed
+#    line = keyword.read()
+#    line = line.strip()
+#    line = line.split('\n')
 
     for word in newsList:
-        for words in line:
+        for words in keyword:
             if words in word:
-                print(word)
+                return word
+
+def categories(keywords):
+    print(keywords)
+
 main()
-
-
 
 # Below this line are relics from earlier versions of the program. They are not designed to work, just give me code examples if I wish to incorporate them later on.
 
