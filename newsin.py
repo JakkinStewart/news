@@ -6,8 +6,7 @@ def main():
 #    news = input("Enter the text file location: ")
 #    keywords = input("Enter the keyword file location: ")
     news = 'news/cnn.txt'
-#    cnn = 'news/cnn.txt'
-    
+
     keywords = open('keywords.txt', 'r')
     keyword = keywords.read()
     keyword = keyword.strip()
@@ -56,7 +55,33 @@ def theNews(newsList, keywords):
                 return word
 
 def categories(keywords):
-    print(keywords)
+#    return(keywords)
+    categories = []
+
+    count = 0
+    for word in keywords:
+        if word[0] == '[':
+            count += 1
+#            categories.append(word[1:-1])
+    print(count)
+    for i in range(count):
+        category = [] * count
+        categories.append(category)
+
+    i = -1
+    for word in keywords:
+        if word[0] == '[':
+            i += 1
+            categories[i].append(word[1:-1])
+        if word[0] != '[':
+            categories[i].append(word)
+   
+#    for word in keywords:
+#        if word[0] == '[':
+#            categories[i].append(word[1:-1])
+#            i += 1
+    print(categories)
+#        print(word)
 
 main()
 
