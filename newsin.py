@@ -11,9 +11,10 @@ def main():
     keyword = keywords.read()
     keyword = keyword.strip()
     keyword = keyword.split('\n')
-
+#    for word in newsList(news):
+#        print(word)
 #    print(theNews(newsList(news), keyword))
-    categories(keyword)
+    printCategories(categories(keyword), newsList(news))
 
 def newsList(newsIn):
     # Runs news.sh
@@ -31,23 +32,9 @@ def newsList(newsIn):
         s.append(word)
     return s
 
-def newsSet(newsIn):
-    # Creates a set of each word.
-    s = newsList(newsIn)
-    predict = set()    
-    for sentences in s:
-        for word in sentences:
-            predict.add(word)
-    return predict
-
-# 
 def theNews(newsList, keywords):
 
     keyword = keywords #open(keywords, 'r')
-
-#    line = keyword.read()
-#    line = line.strip()
-#    line = line.split('\n')
 
     for word in newsList:
         for words in keyword:
@@ -62,8 +49,8 @@ def categories(keywords):
     for word in keywords:
         if word[0] == '[':
             count += 1
-#            categories.append(word[1:-1])
-    print(count)
+
+#    print(count)
     for i in range(count):
         category = [] * count
         categories.append(category)
@@ -73,19 +60,37 @@ def categories(keywords):
         if word[0] == '[':
             i += 1
             categories[i].append(word[1:-1])
+
         if word[0] != '[':
             categories[i].append(word)
-   
-#    for word in keywords:
-#        if word[0] == '[':
-#            categories[i].append(word[1:-1])
-#            i += 1
-    print(categories)
-#        print(word)
+
+    return categories
+
+def printCategories(categories, newsList):
+    for word in categories:
+        print(word[0] + ':')
+        for words in word:
+#            print(words + ':')
+            for wordss in newsList:
+#                print('wordss', word)
+                if words in wordss:
+                    for complexity in wordss:
+                        print(complexity, end=" ")
+                    print()
 
 main()
 
 # Below this line are relics from earlier versions of the program. They are not designed to work, just give me code examples if I wish to incorporate them later on.
+
+#def newsSet(newsIn):
+#    # Creates a set of each word.
+#    s = newsList(newsIn)
+#    predict = set()    
+#    for sentences in s:
+#        for word in sentences:
+#            predict.add(word)
+#    return predict
+
 
 #def newsDict(newsList, newsSet):
 #    list1 = newsList
