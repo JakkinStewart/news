@@ -4,19 +4,24 @@
 import sys
 import socket
 import string
+import ssl
+from time import sleep
 
-HOST='irc.freenode.net'
-PORT=6667
+HOST='irc.anonops.com'
+PORT=6697
 NICK='TestPyBot'
 IDENT='pybot'
 REALNAME='Python Bot'
 readbuffer=''
 
-s=socket.socket()
-s.connect((HOST,PORT))
+sslsocket=socket.socket()
+sslsocket.connect((HOST,PORT))
+s = ssl.wrap_socket(sslsocket)
 s.send(('NICK %s\r\n' % NICK).encode('utf-8'))
 s.send(('USER %s %s bla : %s\r\n' % (IDENT, HOST, REALNAME)).encode('utf-8'))
-s.send(('JOIN ##isso-mnsu\r\n').encode('utf-8'))
+#s.send(('QUOTE PONG oxiDWBqeAK\r\n').encode('utf-8'))
+#sleep(5)
+#s.send(('JOIN #news\n').encode('utf-8'))
 
 while 1:
     readbuffer=readbuffer+s.recv(1024).decode()
@@ -28,7 +33,10 @@ while 1:
         line=line.split()
 
         if (line[0]=='PING'):
-            s.send("PONG %s\r\n" % line[1])
+            s.send(("PONG %s\r\n" % line[1]).encode('utf-8'))
+        if (line[1]=='MODE'):
+            s.send(("JOIN #news\r\n").encode('utf-8'))
 #        for word in line:
 #            print(word, end=' ')
+#        print()
         print(line)
