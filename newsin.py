@@ -77,6 +77,7 @@ def printCategories(categories, newsList):
                     for complexity in wordss:
                         print(complexity, end=" ")
                     print()
+        print()
 
 main()
 

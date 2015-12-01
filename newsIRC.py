@@ -36,7 +36,7 @@ while 1:
             s.send(("PONG %s\r\n" % line[1]).encode('utf-8'))
         if (line[1]=='MODE'):
             s.send(("JOIN #news\r\n").encode('utf-8'))
-#        for word in line:
-#            print(word, end=' ')
-#        print()
-        print(line)
+        for word in line:
+            print(word, end=' ')
+        print()
+#        print(line)
