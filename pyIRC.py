@@ -9,22 +9,24 @@
 
 import sys
 import socket
-import string
+from string import ascii_letters
+from string import punctuation
 import ssl
 
 # Asks user for input.
-host = input("Enter IRC server [AnonOps]: ")
-port = input("Enter port [6697]: ")
-nick = input("Enter nick [PyIRC]: ")
-chan = input("Enter channel [#news]: ")
-Ssl = input("Do you want to use SSL? [Y/n]: ")
+files = open('news.txt', 'a')
+host = ''#input("Enter IRC server [AnonOps]: ")
+port = ''#input("Enter port [6697]: ")
+nick = ''#input("Enter nick [Temp]: ")
+chan = ''#input("Enter channel [#news]: ")
+Ssl = ''#input("Do you want to use SSL? [Y/n]: ")
 
 # If an input was left blank, use defaults.
 if host == '': HOST='irc.anonops.com'
 elif host != '': HOST=host
 if port == '': PORT=6697
 elif port != '': PORT=int(port)
-if nick == '': NICK='PyIRC'
+if nick == '': NICK='Temp'
 elif nick != '': NICK=nick
 if chan == '': CHANNEL='#news'
 elif chan != '': CHANNEL=chan
@@ -67,7 +69,7 @@ while 1:
         line=line.rstrip()
         line=line.split()
 
-        print(line)
+#        print(line)
 
         if (line[0]=='PING'):
             s.send(("PONG %s\r\n" % line[1]).encode('utf-8'))
@@ -81,34 +83,30 @@ while 1:
 #        string = line[0]
 #        temporary = string.split('!')
 #        user = str(temporary[0])[1:]
-        temp = ''
-        for index, item in enumerate(line):
-            if "x03" in item:
-                print(item)
-                line[index] = item[6:]
-#        if str(x[3:])[1:3] == 'x0':
-#            message += x[6:] + ' '
-#        elif x[0] == ':':
-#            message += x[1:-1] + ' '
-#        else: message += x + ' '
-#        print(message)
+#        temp = ''
+#        for index, item in enumerate(line):
+#            if "x03" in item:
+#                print(item)
+#                line[index] = item[6:]
+##        if str(x[3:])[1:3] == 'x0':
+##            message += x[6:] + ' '
+##        elif x[0] == ':':
+##            message += x[1:-1] + ' '
+##        else: message += x + ' '
+##        print(message)
         if line[1] == 'PRIVMSG':
             string = line[0]
             temporary = string.split('!')
             user = str(temporary[0])[1:]
             y = line[3:]
             for x in y:
-               if str(x[3:])[1:3] == 'x0':
-                   message += x[6:] + ' '
-               elif x[0] == ':':
-                   message += x[1:-1] + ' '
-               else: message += x + ' '
-#       print(message)
-
+                if x[0] == ':':
+                    message += x[1:-1] + ' '
+                else: message += x + ' '
+#            print(user, "|", message)
             print(user, '|', message)
+            files.write(message)
 #        for word in line:
 #             print(word[0], word[3], end=' ')
 #        print()
 #        print(line)
-
-
