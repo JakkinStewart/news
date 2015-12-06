@@ -5,9 +5,10 @@ Right now, its a proof of concept python program that works only in a *nix envir
 
 Completed
 - Support categories.
+- Expanded wordlist
 
 Future plans
-- Expand wordlist.
+- Recognize similar posts
 - Support blacklist.
 - Set alerts.
 
