@@ -7,31 +7,38 @@
 
 # In its current stage, this IRC client fulfills the "simplest client" criteria. In the future, it will be updated to follow IRC client protocol and parse messages from IRC servers more cleanly.
 
-import sys
 import socket
-from string import ascii_letters
-from string import punctuation
 import ssl
 
 # Asks user for input.
-files = open('news.txt', 'a')
-host = ''#input("Enter IRC server [AnonOps]: ")
-port = ''#input("Enter port [6697]: ")
-nick = ''#input("Enter nick [Temp]: ")
-chan = ''#input("Enter channel [#news]: ")
-Ssl = ''#input("Do you want to use SSL? [Y/n]: ")
+host = input("Enter IRC server [Freenode]: ")
+port = input("Enter port [6697]: ")
+nick = input("Enter nick [PythonIRCBot]: ")
+chan = input("Enter channel [#temp]: ")
+Ssl = input("Do you want to use SSL? [Y/n]: ")
+logging = input("Do you want to enable logging? [Y/n]: ")
+if logging.lower() == 'y':
+    log = input("Where do you want save the log file? (Default is in currect directory.) ")
+elif logging == '':
+    log = './'
+
 
 # If an input was left blank, use defaults.
-if host == '': HOST='irc.anonops.com'
+if host == '': HOST='irc.freenode.net'
 elif host != '': HOST=host
 if port == '': PORT=6697
 elif port != '': PORT=int(port)
-if nick == '': NICK='Temp'
+if nick == '': NICK='PythonIRCBot'
 elif nick != '': NICK=nick
-if chan == '': CHANNEL='#news'
+if chan == '': CHANNEL='#temp'
 elif chan != '': CHANNEL=chan
 if Ssl == '' or Ssl.lower() == 'y': sslEnable='y'
 elif Ssl.lower() == 'n': sslEnable='n'
+if logging.lower() == '': logFile = open('%s.log' % CHANNEL, 'a')
+elif logging.lower() == 'y':
+    logFile = open(log + '%s.log' % CHANNEL, 'a')
+elif logging.lower() == 'n':
+    pass
 else: exit("This is an unusual error. Contact JakkinStewart at Github to solve this.")
 
 # Sets identity and realname for the IRC server.
@@ -44,13 +51,13 @@ REALNAME='Python IRC Client'
 readbuffer=''
 
 # If SSL was enabled, wrap the socket in SSL.
-if sslEnable.lower() == 'y': 
+if sslEnable.lower() == 'y':
     ssL=socket.socket()
     ssL.connect((HOST,PORT))
     s = ssl.wrap_socket(ssL)
 
 # Otherwise, don't wrap anything.
-elif sslEnable.lower() == 'n': 
+elif sslEnable.lower() == 'n':
     s=socket.socket()
     s.connect((HOST,PORT))
 
@@ -60,53 +67,39 @@ s.send(('USER %s %s bla : %s\r\n' % (IDENT, HOST, REALNAME)).encode('utf-8'))
 
 # Enter an infinite loop.
 while 1:
-    # Read 1024 bytes from the server and append it to the readbuffer. 
-    readbuffer=readbuffer + s.recv(1024).decode()
-    temp=readbuffer.split('\n')
-    readbuffer=temp.pop()
+    try:
+    # Read 1024 bytes from the server and append it to the readbuffer.
+        readbuffer=readbuffer + s.recv(1024).decode()
+        temp=readbuffer.split('\n')
+        readbuffer=temp.pop()
+    
+        for line in temp:
+            line=line.rstrip()
+            line=line.split()
 
-    for line in temp:
-        line=line.rstrip()
-        line=line.split()
+            if (line[0]=='PING'):
+                s.send(("PONG %s\r\n" % line[1]).encode('utf-8'))
+            if (line[1]=='MODE'):
+                s.send(("JOIN %s\r\n" % CHANNEL).encode('utf-8'))
 
-#        print(line)
+            message = ''
+            user = ''
 
-        if (line[0]=='PING'):
-            s.send(("PONG %s\r\n" % line[1]).encode('utf-8'))
-        if (line[1]=='MODE'):
-            s.send(("JOIN %s\r\n" % CHANNEL).encode('utf-8'))
-
-#        users = []
-        message = ''
-        user = ''
-
-#        string = line[0]
-#        temporary = string.split('!')
-#        user = str(temporary[0])[1:]
-#        temp = ''
-#        for index, item in enumerate(line):
-#            if "x03" in item:
-#                print(item)
-#                line[index] = item[6:]
-##        if str(x[3:])[1:3] == 'x0':
-##            message += x[6:] + ' '
-##        elif x[0] == ':':
-##            message += x[1:-1] + ' '
-##        else: message += x + ' '
-##        print(message)
-        if line[1] == 'PRIVMSG':
-            string = line[0]
-            temporary = string.split('!')
-            user = str(temporary[0])[1:]
-            y = line[3:]
-            for x in y:
-                if x[0] == ':':
-                    message += x[1:-1] + ' '
-                else: message += x + ' '
-#            print(user, "|", message)
-            print(user, '|', message)
-            files.write(message)
-#        for word in line:
-#             print(word[0], word[3], end=' ')
-#        print()
-#        print(line)
+            if line[1] == 'PRIVMSG':
+                string = line[0]
+                temporary = string.split('!')
+                user = str(temporary[0])[1:]
+                y = line[3:]
+                for x in y:
+                    if x[0] == ':':
+                        message += x[1:] + ' '
+                    else: message += x + ' '
+                print(user, '|', message)
+                ircChat = user + ' | ' + message +'\n'
+                logFile.write(ircChat)
+                logFile.flush()
+    except KeyboardInterrupt:
+        logFile.write('\nClosed\n')
+        logFile.flush()
+        print()
+        exit('Closing')
