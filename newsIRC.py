@@ -48,7 +48,7 @@ REALNAME='Python IRC Client'
 # Begins readbuffer.
 # Taken from http://archive.oreilly.com/pub/h/1968:
 # You need a readbuffer because your might not always be able to read complete IRC commands from the server (due to a saturated Internet connection, operating system limits, etc).
-print("Connecting...")
+#print("Connecting...")
 readbuffer=''
 
 # If SSL was enabled, wrap the socket in SSL.
@@ -82,7 +82,7 @@ while 1:
                 s.send(("PONG %s\r\n" % line[1]).encode('utf-8'))
             if (line[1]=='MODE'):
                 s.send(("JOIN %s\r\n" % CHANNEL).encode('utf-8'))
-                print("Connected!")
+#                print("Connected!")
 
             message = ''
             user = ''
@@ -99,7 +99,7 @@ while 1:
 #                print(user, '|', message)
                 printOut = user + ' | ' + message
                 ircChat = user + ' | ' + message +'\n'
-                print(printOut)
+#                print(printOut)
                 logFile.write(ircChat)
                 logFile.flush()
     except KeyboardInterrupt:
