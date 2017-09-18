@@ -1,5 +1,5 @@
 # A simple news parser
-### Dead
+### **Dead**
 
 This is a simple program to parse out news from an IRC news channel.
 It'll separate out the news feeds into different files (still working getting rid of that), and print out news tailored to the user based on key words.
